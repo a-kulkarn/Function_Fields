@@ -1,0 +1,242 @@
+\documentclass{amsart}
+\usepackage{color} %forcolor
+\usepackage{verbatim}
+\usepackage{rotating} %for \includegraphix[angle=270]
+\usepackage{amssymb}
+\usepackage{xypic}
+
+%%Change to Roman for enumerate
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\newcommand{\tr}{{ \mathrm{tr}}}
+\newcommand{\str}{{ \ \tr}}
+
+\theoremstyle{definition}
+\newtheorem*{remark*}{Remark}
+
+%%Expand maximum matrix size
+\setcounter{MaxMatrixCols}{20}
+
+
+%%%
+\usepackage[bookmarks,colorlinks,breaklinks]{hyperref}  % PDF hyperlinks, with coloured links
+\hypersetup{linkcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue} % all blue links
+
+\title{Design document for Function Field Project}
+\author{Jens Bauch}
+\author{Avi Kulkarni}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	
+	\section{Class hierarchy}
+	
+	An arrow $A \longrightarrow B$ indicates that the class $B$ inherits from the class $A$.
+	
+	\begin{remark*}
+		The DedekindDomain class is depreciated, but already exists in sage. However, the implementation there seems to be unsubstantial. 
+		
+		The documentation also recommends the creation of a DedekindDomain \emph{category}. We should probably ask about this. Regardless, it seems like we need to code the class anyways.
+	\end{remark*}
+	
+	\[
+		\xymatrix{
+			Ideal\_generic \ar[d] \\
+			DedekindDomainIdeal \ar[d] & MultiplicativeGroupElement \ar[dl]\\
+			DedekindDomainFractionalIdeal 
+		}
+	\]
+	
+	\hspace{1in}
+	
+	\[
+	\xymatrix{
+		IntegralDomain \ar[d] \\
+		DedekindDomain
+	}
+	\]
+	
+	\hspace{2in}
+	
+	\phantom{spacing}	
+
+	\section{Classes}
+
+	\subsection{Class/Category: DedekindDomain}: \newline
+		
+		Attributes:
+		\begin{itemize}
+			\item 
+			Maximal Order
+		\end{itemize}
+	
+		Init:
+		\begin{itemize}
+			\item
+			NumberFields $\rightarrow$ Invoke sage's routines
+			\item
+			FunctionFields $\rightarrow$ do our things
+			\item
+			Else $\rightarrow$ NotImplementedError
+		\end{itemize}
+	
+		Methods:
+		\begin{itemize}
+			\item 
+			FractionalIdealGroup
+			\item
+			krull\_dimension
+			\item
+			is\_commutative
+			\begin{itemize}
+				\item
+					Force this to be true. We may even consider changing the class to CommutativeDedekindDomain.
+			\end{itemize}
+			\item
+			valuation
+		\end{itemize}
+
+	\subsection{Class/Category: DedekindDomainElt}: \newline
+	
+	Attributes:
+	\begin{itemize}
+		\item 
+		denominator
+	\end{itemize}
+	
+	Init:
+	\begin{itemize}
+		\item
+		NumberFields $\rightarrow$ Invoke sage's routines
+		\item
+		FunctionFields $\rightarrow$ do our things
+		\item
+		Else $\rightarrow$ NotImplementedError
+	\end{itemize}
+	
+	Methods:
+	\begin{itemize}
+		\item 
+		FractionalIdealGroup
+		\item
+		krull\_dimension
+		\item
+		is\_commutative
+		\begin{itemize}
+			\item
+			Force this to be true. We may even consider changing the class to CommutativeDedekindDomain.
+		\end{itemize}
+	\end{itemize}
+
+	\subsection{Class: DedekindDomainIdeal}: \newline
+	
+	{\bf Do we want to make the 2-element representation/ OM representation different classes, or do we want the same object to record both representations?} \newline
+	
+	Attributes:
+	\begin{itemize}
+		\item 
+		Basis
+	\end{itemize}
+	
+	Methods:
+	\begin{itemize}
+		\item
+		is\_prime
+		\item
+		denominator
+		\item
+		comparison method
+		\item
+		mult
+		\item
+		norm
+		\item
+		index
+		\item
+		inertia\_degree
+		\item
+		ramification\_degree
+		\item
+		maximal\_order\_basis
+		\item
+		convert\_to\_OM
+			\begin{itemize}
+				\item 
+				if self is prime, do conversion
+				\item
+				else raise NotImplementedError
+			\end{itemize}
+		\item
+		convert\_to\_hnf-representation
+			\begin{itemize}
+				\item 
+				Only for number fields
+			\end{itemize}
+		\item
+		$\mathbb{Z}$-basis to 2-elt representation
+	\end{itemize}
+
+	\subsection{Class: DedekindDomainFractionalIdeal}: \newline
+	
+	Attributes:
+	\begin{itemize}
+		\item 
+		Basis
+	\end{itemize}
+	
+	Methods:
+	\begin{itemize}
+		\item
+		is\_integral
+		\item
+		denominator
+		\item
+		comparison method
+		\item
+		mult
+		\item
+		inver
+		\item
+		norm
+		\item
+		index
+		\item
+		inertia\_degree
+		\item
+		ramification\_degree
+		\item
+		convert\_to\_OM
+		\begin{itemize}
+			\item 
+			if self is prime, do conversion
+			\item
+			else raise NotImplementedError
+		\end{itemize}
+		\item
+		convert\_to\_hnf-representation
+		\begin{itemize}
+			\item 
+			Only for number fields
+		\end{itemize}
+	\end{itemize}
+
+\section{Accessory functions}
+
+\section{TODO}
+
+\begin{enumerate}
+	\item
+		Set up Git repository
+	\item
+		Decide if 2-elt/OM representations should be distinct classes or unified in a single class
+	\item
+		Decide on Category versus Object approach
+	\item
+		Determine useful information to store as attributes
+\end{enumerate}
+
+
+\end{document}
+
