@@ -5,6 +5,8 @@
 \usepackage{amssymb}
 \usepackage{xypic}
 
+\usepackage{soul}
+
 %%Change to Roman for enumerate
 \renewcommand{\labelenumi}{(\roman{enumi})}
 \newcommand{\tr}{{ \mathrm{tr}}}
@@ -30,10 +32,62 @@
 	
 	\maketitle
 	
+	\section{General Architecture}
 	
+			As per the manual page regarding the depreciated "Dedekind domain" class, we should implement Dedekind domains as a Sage Category and implement our methods as generic operations whenever possible. Of course, we can always override these methods for specific classes of Dedekind domains, such as with NumberFields.
+			
+			\bigskip
+			
+			Why use the category framework:
+			\begin{enumerate}
+				\item 
+					It really does not seem like it is that difficult to use.
+				\item
+					If our implementations are sufficiently generic, then we do not need to rewrite the class methods every time we want to implement a new type of Dedekind domain.
+				\item
+					We minimize code duplication.
+				\item
+					We can augment pre-existing classes in SAGE by refining the category. What sage does is attaches the "ParentMethods" defined in the category to the parent class, "ElementMethods" to the elements, etc. This means, for instance, that the preexisting "AbsoluteOrder" class for number fields can inherit the methods we write without restructuring the entire class hierarchy. Of course, whether these methods compute the correct thing when called can be tricky!
+				\end{enumerate}
+			
+			\begin{remark*}
+				We need to be careful regarding the order of inheritance. For instance, the method "\_mul\_" defined for "NumberFieldIdeal" should override the generic category method we write and not vice-versa. To me it is unclear how exactly to do this. For now, we can throw an error if someone tries to turn a "NumberFieldIdeal" into a "DedekindDomainIdeal".
+			\end{remark*}
+			
+			\begin{remark*}
+				After implementing the "DedekindDomains" category, in principle we should find all of the Sage Categories for which "DedekindDomains" is an immediate supercategory (basically, PIDS). 
+			\end{remark*}
+	
+			\begin{remark*}
+				The Sage Category "NumberFields" implements none of the important routines. Instead, the design decision there was to implement all routines as class methods in "NumberFieldIdeal". This is likely because the original code was written before 2009. That is, before the category framework was in Sage. 
+			\end{remark*}
+	
+	\subsection{Category hierarchies}
+	
+		An arrow $A \longrightarrow B$ indicates that the category $A$ is a subcategory of $B$.
+		
+		The following is a piece of Sage's category graph. The dotted arrows shows where our future category resides
+		\[
+		\xymatrix{
+			\ldots \\
+			IntegralDomains \ar[u] \\
+			GcdDomains \ar[u]   &   DedekindDomains \ar@{-->}[ul] \\
+			UFDs \ar[u] \\
+			PIDS \ar[u] \ar@{-->}[uur] \\
+			\ldots \ar[u] \\
+			Fields \ar[u] \\
+			QuotientFields \ar[u] &  DedekindDomainQuotientField\_with\_order \ar@{-->}[l] \ar@{-->}[uuuuu]_{temporary} 
+		}
+		\]
+		Note that the reason we might need "DedekindDomainQuotientField\_with\_order" is so that our valuations have somewhere to live. Temporarily, we should declare the immediate super category to be Dedekind domains so we don't have to update the super category list for PIDs. Otherwise, doing things properly, requires us to keep a full Sage source in the git repository.
+	
+		\hspace{1in}
+	
+		TODO: It is presently unclear what to do regarding the category structure of ideals of Dedekind domains. One approach is to simply have a class "DedekindDomainIdeal", but modify the category of "DedekindDomains" to have the ideal() method automatically generate a "DedekindDomainIdeal". The other is to make a category of "DedekindDomainIdeals" and implement functionality there. Both methods are likely equivalent for our purposes. We should draw inspiration from the treatment of ideals in the category "PIDs". Ultimately, this decision comes down to what works best with interfacing with the existing operations for "NumberFieldIdeals".
+			
 	\section{Class hierarchy}
 	
-	An arrow $A \longrightarrow B$ indicates that the class $B$ inherits from the class $A$.
+	An arrow $A \longrightarrow B$ indicates that the class $A$ inherits from the class $B$.
 	
 	\begin{remark*}
 		The DedekindDomain class is depreciated, but already exists in sage. However, the implementation there seems to be unsubstantial. 
@@ -43,25 +97,12 @@
 	
 	\[
 		\xymatrix{
-			Ideal\_generic \ar[d] \\
-			DedekindDomainIdeal \ar[d] & MultiplicativeGroupElement \ar[dl]\\
-			DedekindDomainFractionalIdeal 
+			Ideal\_generic \\
+			DedekindDomainIdeal \ar[u] & MultiplicativeGroupElement \\
+			DedekindDomainFractionalIdeal \ar[ur] \ar[u]
 		}
 	\]
 	
-	\hspace{1in}
-	
-	\[
-	\xymatrix{
-		IntegralDomain \ar[d] \\
-		DedekindDomain
-	}
-	\]
-	
-	\hspace{2in}
-	
-	\phantom{spacing}	
-
 	\section{Classes}
 
 	\subsection{Class/Category: DedekindDomain}: \newline
@@ -80,6 +121,8 @@
 			FunctionFields $\rightarrow$ do our things
 			\item
 			Else $\rightarrow$ NotImplementedError
+			\item
+			Category: Demand required parent/element methods (valuation, gcd, etc)
 		\end{itemize}
 	
 		Methods:
@@ -88,12 +131,6 @@
 			FractionalIdealGroup
 			\item
 			krull\_dimension
-			\item
-			is\_commutative
-			\begin{itemize}
-				\item
-					Force this to be true. We may even consider changing the class to CommutativeDedekindDomain.
-			\end{itemize}
 			\item
 			valuation
 		\end{itemize}
@@ -118,16 +155,10 @@
 	
 	Methods:
 	\begin{itemize}
-		\item 
-		FractionalIdealGroup
 		\item
-		krull\_dimension
+		denominator
 		\item
-		is\_commutative
-		\begin{itemize}
-			\item
-			Force this to be true. We may even consider changing the class to CommutativeDedekindDomain.
-		\end{itemize}
+		numerator
 	\end{itemize}
 
 	\subsection{Class: DedekindDomainIdeal}: \newline
@@ -228,11 +259,11 @@
 
 \begin{enumerate}
 	\item
-		Set up Git repository
-	\item
 		Decide if 2-elt/OM representations should be distinct classes or unified in a single class
 	\item
-		Decide on Category versus Object approach
+		\st{ Decide on Category versus Object approach for Dedekind Domains} We should use the Category approach.
+	\item
+		Decide on Category or Object approach for DedekindDomainIdeals
 	\item
 		Determine useful information to store as attributes
 \end{enumerate}

@@ -1,8 +1,10 @@
-\BOOKMARK [1][-]{section.1}{1. Class hierarchy}{}% 1
-\BOOKMARK [1][-]{section.2}{2. Classes}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{2.1. Class/Category: DedekindDomain}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{2.2. Class/Category: DedekindDomainElt}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{2.3. Class: DedekindDomainIdeal}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{2.4. Class: DedekindDomainFractionalIdeal}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{3. Accessory functions}{}% 7
-\BOOKMARK [1][-]{section.4}{4. TODO}{}% 8
+\BOOKMARK [1][-]{section.1}{1. General Architecture}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{1.1. Category hierarchies}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{2. Class hierarchy}{}% 3
+\BOOKMARK [1][-]{section.3}{3. Classes}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{3.1. Class/Category: DedekindDomain}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.2}{3.2. Class/Category: DedekindDomainElt}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.3}{3.3. Class: DedekindDomainIdeal}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.4}{3.4. Class: DedekindDomainFractionalIdeal}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{4. Accessory functions}{}% 9
+\BOOKMARK [1][-]{section.5}{5. TODO}{}% 10
