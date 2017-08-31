@@ -198,6 +198,65 @@ def all_normalized_uniformizer(val_ext):
     return normilized_uniformizer
                 
 
+############## Dedekind Domains Category #####
+
+from sage.categories.integral_domains import IntegralDomains
+
+class DedekindDomains(Category):
+    
+    def super_categories(self):
+        return [IntegralDomains()]
+
+    class ParentMethods:
+
+        def ideal_with_rep(self):
+            return "potato"
+
+        def degree(self):
+            '''
+            This function should absolutely be removed, but is present for instructive purposes.
+            '''
+            return "override_after_category"
+
+        def other_degree(self):
+            return "the other degree"
+
+    class ElementMethods:
+        pass
+
+
+def test_DedekindDomains_category():
+    R.<t> = PolynomialRing(ZZ)
+    OL = R.quo(t^2+1)
+
+    # First lets check how things work by default
+    print "Category: ", OL.category()
+    print "degree output: ", OL.degree()  # We use this to check how override works
+    
+    try:
+        print "New method test:", OL.ideal_with_rep()
+    except AttributeError:
+        print "OL does not have ideal_with_rep method"
+
+    # Change the category. This tends to be done on an object initialization but constructor ``quo``
+    # doesn't allow you to specify a category option
+
+    OL._refine_category_(DedekindDomains())
+    
+    # Check how things work now
+    print "Category: ", OL.category()
+    print "degree output: ", OL.degree()  # Notice this is still the same!
+    
+    try:
+        print "New method test: ", OL.ideal_with_rep() # now this works
+    except AttributeError:
+        print "OL does not have ideal_with_rep method"
+
+    # if we really want to, we can actually assign methods
+    OL.degree = OL.other_degree
+    print "New degree output:", OL.degree()
+
+    # TODO: declare various required methods needed to execute Dedekind domain algorithms.
 
     
 ############## fractional ideals #######
