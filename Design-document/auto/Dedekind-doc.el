@@ -20,6 +20,8 @@
     "rotating"
     "amssymb"
     "xypic"
+    "algorithmic"
+    "algorithm"
     "soul"
     "hyperref")
    (TeX-add-symbols
@@ -27,8 +29,15 @@
     "str"
     "p"
     "P"
+    "q"
+    "Q"
     "su"
     "oo"
-    "NM"))
+    "NM"
+    "Z")
+   (LaTeX-add-labels
+    "for_gamma"
+    "PPIO"
+    "support_expand"))
  :latex)
 

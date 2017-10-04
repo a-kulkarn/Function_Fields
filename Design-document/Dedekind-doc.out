@@ -1,11 +1,12 @@
 \BOOKMARK [1][-]{section.1}{1. Theoretical Background}{}% 1
-\BOOKMARK [1][-]{section.2}{2. General Architecture}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{2.1. Category hierarchies}{section.2}% 3
-\BOOKMARK [1][-]{section.3}{3. Class hierarchy}{}% 4
-\BOOKMARK [1][-]{section.4}{4. Classes}{}% 5
-\BOOKMARK [2][-]{subsection.4.1}{4.1. Class/Category: DedekindDomain}{section.4}% 6
-\BOOKMARK [2][-]{subsection.4.2}{4.2. Class/Category: DedekindDomainElt}{section.4}% 7
-\BOOKMARK [2][-]{subsection.4.3}{4.3. Class: DedekindDomainIdeal}{section.4}% 8
-\BOOKMARK [2][-]{subsection.4.4}{4.4. Class: DedekindDomainFractionalIdeal}{section.4}% 9
-\BOOKMARK [1][-]{section.5}{5. Accessory functions}{}% 10
-\BOOKMARK [1][-]{section.6}{6. TODO}{}% 11
+\BOOKMARK [2][-]{subsection.1.1}{1.1. Short Representation of Ideals}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{2. General Architecture}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{2.1. Category hierarchies}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{3. Class hierarchy}{}% 5
+\BOOKMARK [1][-]{section.4}{4. Classes}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{4.1. Class/Category: DedekindDomain}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{4.2. Class/Category: DedekindDomainElt}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{4.3. Class: DedekindDomainIdeal}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{4.4. Class: DedekindDomainFractionalIdeal}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{5. Accessory functions}{}% 11
+\BOOKMARK [1][-]{section.6}{6. TODO}{}% 12

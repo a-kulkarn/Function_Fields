@@ -4,9 +4,14 @@
 \usepackage{rotating} %for \includegraphix[angle=270]
 \usepackage{amssymb}
 \usepackage{xypic}
-
+\usepackage{algorithmic}
+\usepackage{algorithm}
 \usepackage{soul}
 
+%% Change for algorithm
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
 
 
 
@@ -26,10 +31,12 @@
 
 \def\p{\mathfrak{p}}
 \def\P{\mathfrak{P}}
+\def\q{\mathfrak{q}}
+\def\Q{\mathfrak{Q}}
 \def\su{\mathrm{supp}}
 \def\oo{\mathcal{O}}
 \def\NM{\mathrm{Norm}}
-
+\def\Z{\mathbb{Z}}
 
 
 
@@ -52,21 +59,95 @@
 In this section we describe the theoretical framwork for our package (what will be the package name?). 
 
 Let $A$ be a Dedekind domain and $K$ the fraction field of $A$. Denote by $\theta$ a root of a monic irreducible separable polynomial $f\in A[x]$ of degree $n$ and let $L=K(\theta)$ be the algebraic extension defined by $f$. We denote by $\oo_L$ the integral closure of $A$ in $L$. If $A$ is a PID, then $\oo_L$ is a free $A$-module of rank $n$. Any ideal $I$ of $\oo_L$ can alse be consider as a free $A$-module of rank $n$. For any prime ideal $\P$ of $\oo_L$ we denote by $v_\P$ the discrete valuation induced by $\P$. For $I=\prod_{\P \in \mathrm{Spec}(\oo_L)}\P^{a_\P}$ we define $v_\P(I)= a_\P$ and $\su(I)=\{\P\in \mathrm{Spec}(\oo_L)\mid a_\P\neq 0\}$.
-
+\subsection{Short Representation of Ideals}
 In this section we summarize the results from \cite{Fieker} in the context of the algebraic extension $L$ of a fraction field $K$ of the Dedekind domain $A$. Let $I$ be a fractional ideal of $\oo_L$ and $S$ be a set of prime ideals of $A$ such that the numerator of $\NM(I)$ factors over $S$. We call the pair $(g,\gamma)$ an $S$-normal presentation for $I$ iff
 \begin{enumerate}
 \item $g$ belongs to $I\cap A$ and $\gamma\in A$,
 \item  for all prime ideals $\P$ of $\oo_L$ over $p\notin S$ we have $v_\P(g)=v_P(I)$=0,
-\item  for all prime ideals $\P$ of $\oo_L$ over $p\in S$ we have $v_\P(\gamma)=v_P(I)$.
+\item  for all prime ideals $\P$ of $\oo_L$ over $p\in S$ we have $v_\P(\gamma)=v_P(I)$.\label{for_gamma}
 \end{enumerate}
+\subsubsection{Multiplication}
+For the multiplication of two ideals $I$ and $I'$ we consider their $S$-normalized presentations $(g,\gamma)$ and $(g',\gamma')$, respectively. Then $(g\cdot g',\gamma\cdot \gamma')$ is an $S$-normal presentations of $I\cdot I'$. We define the $\su(I)$ to be the set of all prime ideals of $\oo_L$ which divide $I$ and set $S(I):=\su_A(I) =\{\P\cap A\mid\P\in\su(I)\}$. In practice we present and ideal by an $S(I)$-normal presentation.
 
-For the multiplication of two ideals $I$ and $I'$ we consider their $S$-normalized presentations $(g,\gamma)$ and $(g',\gamma')$, respectively. Then $(g\cdot g',\gamma\cdot \gamma')$ is an $S$-normal presentations of $I\cdot I'$. We define the $\su(I)$ to be the set of all prime ideals of $\oo_L$ which divide $I$ and set $S(I):=\su_A(I) =\{\P\cap A\mid\P\in\su(I)\}$. In practice we present and ideal by an $S(I)$-normal presentation. Given an $S(I)$-normal presentation of $I$ and an $S(I')$-normalized presentation of $I'$ we have to compute for both ideals an $S=S(I)\cup S(I')$-normal presentation and multiply their components in order to get an $S$-normal presentation for $I\cdot I'$. Let $s_I=\prod_{p\in S(I)}p$ and $s_{I'}=\prod_{p\in S(I')\setminus S(I)}p$. If $\gcd(g s_I,s_{I'})=1=ug s_I+vs_{I'}$, then $(g,\delta)$ is an $S$-normal presentation according Lemma 6.3 in \cite{Fieker}, where $\beta = vs_{I'}\gamma+ug s_I$.
 
-For the inversion of $I$, suppose that $a\cdot A = \gamma\oo_L\cap A$, where $a$ factors into $a_1\cdot a_2$ with $a_2$ not divisible by prime ideals in $S$. Then $(1,a_2\gamma)$ is an $S(I)$-normal presentation for $I^{-1}$. 
+In practice $L$ will be a number field or an algebraic function field. Thus $A\in \{ \Z,k[x]\}$, where $k$ denotes a field. If $A=\Z$ we define $\min(I)$ the minimum of an ideal $I$ to be the absolute value of the minimal generator of $I\cap A$. In the case of $A=k[x]$ we define $\min(I)$ to be the monic polynomial of minimal degree generating $I\cap A$. We call an element in $A$ maximal if it is maximal with respect to the absolute value or the degree depending if $A=\Z$ or $A=k[x]$, respectively.
+
+Then a $S(I)$-normal presentation of $I$ is given by $(\min(I),\gamma)$ with $\gamma$ as in item \ref{for_gamma}. Let $\p$ be a prime ideal of $A$ and $\P$ be prime ideal of $\oo_L$ lying over $\p=\pi A$. We take $\pi_\P\in \P$ satisfying $v_\Q(\pi_\P)=\delta_{\Q,\P}$ for all prime ideals $\Q$ lying of $\p$. Then $\{\p\}$-normal presentation for $\P$ is given by $(\pi,\pi_\P)$.
+
+
+
+
+Given an $S(I)$-normal presentation of $I$ and an $S(I')$-normal presentation of $I'$ we have to compute for both ideals an $S=S(I)\cup S(I')$-normal presentation and multiply their components in order to get an $S$-normal presentation for $I\cdot I'$. Let $s_I=\prod_{p\in S(I)}p$ and $s_{I'}=\prod_{p\in S(I')\setminus S(I)}p$. If $\gcd(g s_I,s_{I'})=1=ug s_I+vs_{I'}$, then $(g,\delta)$ is an $S$-normal presentation according Lemma 6.3 in \cite{Fieker}, where $\beta = vs_{I'}\gamma+ug s_I$.
+
+The bottleneck is the computation of a $S$-normal presentation for $I$ and $I'$.
+
+In practice we do not store the sets $S(I)$ or $S(I')$. We just update the second generator $I$ with respect to the first generator of $I'$ and vice versa. Herefore, we consider the algorithm $\mathrm{PPIO}$ from Dan Bernsteil \cite{}[I have the reference]:
+
+
+
+
+
+
+\begin{algorithm}
+\caption{: PPIO}
+\label{PPIO}
+\begin{algorithmic}[1]
+
+\REQUIRE $a,b\in A$. 
+\ENSURE  $a=c\cdot n$ with $c,n\in A$ maximal such that $\gcd(c,b)=1$ .\\[0.25 cm]
+
+
+
+\STATE   $c \longleftarrow \gcd(a,b)$
+\STATE   $ n \longleftarrow a\ \mathrm{div}\ c$
+\STATE   $ g\longleftarrow  \gcd(c,n)$
+\WHILE{$g\neq 1$}   
+\STATE          $ c \longleftarrow c\cdot g$
+\STATE           $ n \longleftarrow n\ \mathrm{div}\ g$
+\STATE           $ g \longleftarrow \gcd(c,n)$
+\ENDWHILE
+\STATE    $\textbf{return }c,n$
+
+
+
+\end{algorithmic}
+\end{algorithm}
+
+Denote by $(g_1,\gamma_1)$ the representation for $I$ and by $(g_2,\gamma_2)$ the representation for $I'$, respectively. 
+We expand $(g_1,\gamma_1)$ w.r.t. $g_2$ as follows:
+
+\begin{algorithm}
+\caption{: Support Expansion}
+\label{support_expand}
+\begin{algorithmic}[1]
+
+%\REQUIRE $()$. 
+%\ENSURE  $a=c\cdot n$ with $c,n\in A$ maximal such that $\gcd(c,b)=1$ .\\[0.25 cm]
+
+
+  
+\STATE   $g\longleftarrow g_1$
+\STATE   $t,r\longleftarrow \mathrm{PPIO}(g_2,g)$
+\STATE   $ 1,u,v\longleftarrow \mathrm{xgcd}(g^2,t)$
+\STATE   $\gamma \longleftarrow v\cdot t\cdot \gamma_1+u\cdot g^2  $
+\STATE    $\textbf{return } $(g,\gamma)$
+
+
+
+\end{algorithmic}
+\end{algorithm}
+Then $(g,\gamma)$ is an $S$-normal preentation for $I$.
+\subsubsection{Inversion}
+
+
+Let $(g,\gamma)$ be a $S(I)$-normal presentation for an ideal $I$. For the inversion of $I$, we compute the denominator $d$ of $\beta = 1/\gamma$ in the maximal order $\oo_L$. Suppose $d$ factors into $d_1\cdot d_2$, where $d_2$ is maximal being  coprime to $g$. Then $(1,d_2\beta)$ is an $S(I^{-1})$-normal presentation for $I^{-1}$. 
 
 For a principal ideal $I = \langle \gamma\rangle$ an $S(I)$-normal presentation is given by $(g,\gamma)$, where generates $ I\cap A$.
 
 
+
+
+We represent 
 
 
 	
