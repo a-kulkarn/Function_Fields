@@ -210,7 +210,8 @@ class dedekind_ideal(object):
         self.den = den
         self.is_integral = is_integral
         self.factors = factors
-        self.norm = norm
+        self.norm = norm # We safe the norm of the numerator ideal. The correct norm is than
+        # self.norm/self.den^degree(L)
     def __repr__(self):
         return str(self.num_ideal)+"/" +str(self.den)
     
@@ -291,9 +292,10 @@ p = 11
 
 #L = decompose_prime(K,p)[0]
 
-W = dedekind_ideal(P,1,false,None)
 
-WW = dedekind_ideal(Q,5,false,None)
+W = dedekind_ideal(P,1,false,None,P.norm)
+
+WW = dedekind_ideal(Q,5,false,None,Q.norm)
 
 U = W*WW
 
