@@ -52,8 +52,8 @@ class dedekind_integral_ideal(object):
         gen = den/gcd(den,self.min_gen)*inv
         d = denominator(gen) # Should be denominator in maximal order
         min_gen = _sage_const_1 
-        I = dedekind_integral_ideal(min_gen,reduce(d*gen,d**_sage_const_2 ),False,None,None,None,self.norm**-_sage_const_1 ,None)
-        return dedekind_ideal(I,self.min_gen, False,None)     
+        I = dedekind_integral_ideal(min_gen,reduce(d*gen,d**_sage_const_2 ),False,None,None,None,_sage_const_1 ,None)
+        return dedekind_ideal(I,self.min_gen, False,None,self.norm**-_sage_const_1 )     
        
     def __repr__(self):
         return"("+str(self.min_gen)+"," +str(self.gen)+")"
@@ -210,12 +210,12 @@ def all_normalized_uniformizer(val_ext):
 
 class dedekind_ideal(object):
 
-    def __init__(self, num_ideal, den, is_integral, factors):
+    def __init__(self, num_ideal, den, is_integral, factors, norm):
         self.num_ideal = num_ideal
         self.den = den
         self.is_integral = is_integral
         self.factors = factors
-        
+        self.norm = norm
     def __repr__(self):
         return str(self.num_ideal)+"/" +str(self.den)
     
